@@ -5,7 +5,8 @@
        "name": "yle-politiikka",
        "url": "http://yle.fi/uutiset/rss/uutiset.rss?osasto=politiikka",
        "need_analysis": "FALSE",
-       "rank": "0"
+       "rank": "0",
+       "lastFeedPubdate": "0"
     },
 
     {
@@ -13,20 +14,23 @@
        "name": "yle-kotimaa",
        "url": "http://yle.fi/uutiset/rss/uutiset.rss?osasto=kotimaa",
        "need_analysis": "TRUE",
-       "rank": "0"
+       "rank": "0",
+       "lastFeedPubdate": "0"
     },
     {
        "id":"2",
        "name": "iltasanomat-kotimaa",
        "url": "http://www.iltasanomat.fi/rss/kotimaa.xml",
        "need_analysis": "TRUE",
-       "rank": "0"
+       "rank": "0",
+       "lastFeedPubdate": "0"
     },
     {
        "id":"3",
        "name": "iltalehti-kotimaa",
        "url": "http://www.iltalehti.fi/rss/kotimaa.xml",
        "need_analysis": "TRUE",
-       "rank": "0"
+       "rank": "0",
+       "lastFeedPubdate": "0"
     } ]
 }

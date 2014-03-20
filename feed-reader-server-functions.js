@@ -56,20 +56,53 @@ feedReader.readAllFeeds = function() {
 		if (error) {console.dir(error);}
 
 		feedscollection.count(function(error, count) {
-			console.log(count);
 			if (error) {console.dir(error);}
+
 			for (var i = count - 1; i >= 0; i--) {
-				console.log(i);
+				var t;
+				
 				var cursor = i.toString();
+
 				feedscollection.findOne({'id': cursor}, function(error, doc) {
+					var lastFeedPubdate = doc.lastFeedPubdate;
+					console.log(lastFeedPubdate);
 					if (error) {console.dir(error);}
+					var t=0;
+
 					request(doc.url).pipe(new FeedParser())
 						.on('error', function(error) {
 							console.log(error);
 							db.close();
 						})
 						.on('data', function(item) {
-							console.log(item.title);
+							if(t==0) {
+								var latestFeedPubdateInThisRound = Date.parse(item.pubdate);
+								console.log(latestFeedPubdateInThisRound);
+								t++;
+								console.log('t++');
+							}
+							if(Date.parse(item.pubdate) > lastFeedPubdate) {
+								console.log(item.title);
+								newscollection.save({'title': item.title,
+													'summary': item.summary,
+													'description': item.description,
+													'url': item.link,
+													'pubdate': item.pubdate,
+													'image': item.image,
+													'categories': item.categories},
+													function(error, doc){});
+							}
+							console.log('doing update');
+							//console.log(latestFeedPubdateInThisRound);
+
+							feedscollection.update({'id': cursor}, 
+													{$set: {'lastFeedPubdate': 'nigga'}},
+													function (error, result) {
+													if (error) {console.log('errororor')};
+													});							
+
+							
+							/*console.log(item.title);
 							newscollection.save({'title': item.title,
 												'summary': item.summary,
 												'description': item.description,
@@ -78,12 +111,14 @@ feedReader.readAllFeeds = function() {
 												'image': item.image,
 												'categories': item.categories},
 												function(error, doc){});
-							console.log('saving news')
-							db.close();
+							console.log(item.pubdate)*/
+							//db.close() Tämä pitäisi sijoittaa jotenkin järkevästi. Tässä kohtaa se sulkee db:n heti ekan uutisen jälkeen.
 						});
 				});
+
 			};
 		});
+		
 	});
 }
 
